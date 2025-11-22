@@ -15,7 +15,7 @@ const ProductCard = ({ details }) => {
             </View>
             <View style={styles.details}>
                 <Text style={styles.productName}>{name}</Text>
-                <Text style={styles.price}>{price}rs.</Text>
+                <Text style={styles.price}>{price} rs.</Text>
                 <Text style={{color: '#6b6b6bc9'}}>{numOfPurchases} purchases till date</Text>
                 <Text style={{color: '#6b6b6bc9'}}>Retailer: {retailer}</Text>
             </View>
@@ -45,11 +45,14 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     details: {
+        width: '70%',
         display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'start',
         gap: 1
     },
     productName: {
-       fontSize: 30 
+       fontSize: 25 
     },
     price: {
         fontSize: 20
