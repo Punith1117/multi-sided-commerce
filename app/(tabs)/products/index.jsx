@@ -1,8 +1,8 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import ProductCard from '../../components/ProductCard'
-import useProducts from '../../hooks/useProducts'
+import ProductCard from '../../../components/ProductCard'
+import useProducts from '../../../hooks/useProducts'
 
 const Products = () => {
 	const safeArea = useSafeAreaInsets()
