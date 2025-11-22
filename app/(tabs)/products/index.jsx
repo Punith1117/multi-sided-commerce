@@ -19,7 +19,7 @@ const Products = () => {
 			<FlatList 
 				data={products}
 				renderItem={({item}) => <ProductCard details={item}/>}
-				keyExtractor={product => product.id}
+				keyExtractor={product => product.$id.toString()}
 			/>
 		</View>
 	)
