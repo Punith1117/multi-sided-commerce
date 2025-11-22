@@ -1,15 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { useRouter } from 'expo-router'
 
 const ProductCard = ({ details }) => {
     const {
+        $id,
         name,
         price,
         numOfPurchases,
         retailer
     } = details
+    const router = useRouter()
+
+    const handleClick = () => {
+        router.navigate(`/products/${$id}`)
+    }
+
     return (
-        <View style={styles.card}>
+        <Pressable onPress={handleClick} style={styles.card}>
             <View style={styles.imageSpace}>
                 <Text>[Image goes here]</Text>
             </View>
@@ -19,7 +27,7 @@ const ProductCard = ({ details }) => {
                 <Text style={{color: '#6b6b6bc9'}}>{numOfPurchases} purchases till date</Text>
                 <Text style={{color: '#6b6b6bc9'}}>Retailer: {retailer}</Text>
             </View>
-        </View>
+        </Pressable>
     )
 }
 
