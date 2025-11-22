@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { databases } from '../lib/appwrite'
+import { DATABASE_ID, databases } from '../lib/appwrite'
 
 const useProducts = () => {
 	const [products, setProducts] = useState([])
@@ -10,7 +10,7 @@ const useProducts = () => {
 		const fetchProducts = async () => {
 			try {
 				const result = await databases.listDocuments({
-					databaseId: '691c7cde002ac4b16fd8',
+					databaseId: DATABASE_ID,
 					collectionId: 'products',
 				})
 				setProducts(result.documents)
