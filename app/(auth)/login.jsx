@@ -2,8 +2,8 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { account } from '../../lib/appwrite'
-import { ID } from 'react-native-appwrite'
+import { account, DATABASE_ID, databases } from '../../lib/appwrite'
+import { ID, Query } from 'react-native-appwrite'
 import useUser from '../../hooks/useUser'
 
 const Login = () => {
@@ -11,7 +11,7 @@ const Login = () => {
 	const [email, setEmail] = useState('')
 	const [secret, setSecret] = useState('')
 	const [userId, setUserId] = useState(null)
-	const {setUser} = useUser()
+	const {setUser, setUserLoading} = useUser()
 
 	const handleEmailSubmit = async (email) => {
 		try {
@@ -32,10 +32,29 @@ const Login = () => {
 				secret
 			})
 			const user = await account.get()
-			setUser(user)
-			router.replace('/products')
+			setUser(user)			
+			setUserLoading(false)
+
+			const result = await databases.listDocuments({
+				databaseId: DATABASE_ID,
+				collectionId: 'users',
+				queries: [Query.equal('$id', user.$id)]
+			})
+
+			if (result.documents.length === 0) {
+				await databases.createDocument({
+					databaseId: DATABASE_ID,
+					collectionId: 'users',
+					documentId: user.$id,
+					data: {
+						email: user.email
+					}
+				})
+			}
 		} catch (e) {
 			console.log(e)
+		} finally {
+			router.replace('/products')
 		}
 	}
   
