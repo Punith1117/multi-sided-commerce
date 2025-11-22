@@ -13,7 +13,7 @@ const ProductCard = ({ details }) => {
     const router = useRouter()
 
     const handleClick = () => {
-        router.navigate(`/products/${$id}`)
+        router.push(`/products/${$id}`)
     }
 
     return (

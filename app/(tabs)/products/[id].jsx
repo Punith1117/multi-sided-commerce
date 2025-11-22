@@ -43,7 +43,11 @@ const ProductDetails = () => {
             <Button 
                 title='Back'
                 onPress={() => {
-                    router.navigate('/products')
+                    if (router.canGoBack()) {
+                        router.back()
+                    } else {
+                        router.replace('/products')
+                    }
                 }}
                 color='#469279'
             />
