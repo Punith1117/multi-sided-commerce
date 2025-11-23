@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router'
 
 const ProductCard = ({ details }) => {
     const {
-        $id,
+        id,
         name,
         price,
         numOfPurchases,
@@ -13,7 +13,7 @@ const ProductCard = ({ details }) => {
     const router = useRouter()
 
     const handleClick = () => {
-        router.push(`/products/${$id}`)
+        router.push(`/products/${id}`)
     }
 
     return (
