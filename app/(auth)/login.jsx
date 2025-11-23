@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { account, DATABASE_ID, databases } from '../../lib/appwrite'
 import { ID, Query } from 'react-native-appwrite'
 import useUser from '../../hooks/useUser'
+import { supabase } from '../../lib/supabase'
 
 const Login = () => {
 	const router = useRouter()
@@ -35,22 +36,11 @@ const Login = () => {
 			setUser(user)			
 			setUserLoading(false)
 
-			const result = await databases.listDocuments({
-				databaseId: DATABASE_ID,
-				collectionId: 'users',
-				queries: [Query.equal('$id', user.$id)]
-			})
-
-			if (result.documents.length === 0) {
-				await databases.createDocument({
-					databaseId: DATABASE_ID,
-					collectionId: 'users',
-					documentId: user.$id,
-					data: {
-						email: user.email
-					}
-				})
-			}
+			const { data, error } = await supabase
+				.from('users')
+				.upsert({userId: user.$id, email: user.email})
+				.select()
+			if (error) console.log(error)			
 		} catch (e) {
 			console.log(e)
 		} finally {
