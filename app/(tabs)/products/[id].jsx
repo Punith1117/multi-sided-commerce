@@ -17,7 +17,7 @@ const ProductDetails = () => {
     )
 
     const {
-        $id,
+        id: productId, // id conflicts with already declared param id
         name,
         price,
         numOfPurchases,

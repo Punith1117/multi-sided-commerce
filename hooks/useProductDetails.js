@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { DATABASE_ID, databases } from '../lib/appwrite'
+import { supabase } from '../lib/supabase'
 
 const useProductDetails = (id) => {
     const [product, setProduct] = useState(null)
@@ -7,17 +7,18 @@ const useProductDetails = (id) => {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            try {
-                const result = await databases.getDocument({
-                    databaseId: DATABASE_ID,
-                    collectionId: 'products',
-                    documentId: id,
-                })
-                setProduct(result)
+            const {data, error} = await supabase
+                .from('products')
+                .select()
+                .eq('id', id)
+
+            if (error) {
+                console.log(error)
                 setLoading(false)
-            } catch (e) {
-                console.log(e)
+                return
             }
+            setProduct(data[0])
+            setLoading(false)
         }
         fetchProduct()
     }, [])

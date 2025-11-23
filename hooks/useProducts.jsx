@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { DATABASE_ID, databases } from '../lib/appwrite'
+import { supabase } from '../lib/supabase'
 
 const useProducts = () => {
 	const [products, setProducts] = useState([])
@@ -8,16 +7,16 @@ const useProducts = () => {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			try {
-				const result = await databases.listDocuments({
-					databaseId: DATABASE_ID,
-					collectionId: 'products',
-				})
-				setProducts(result.documents)
+			const { data, error } = await supabase
+				.from('products')
+				.select()
+			if (error) {
+				console.log(error)
 				setLoading(false)
-			} catch (e) {
-				console.log(e)
+				return
 			}
+			setProducts(data)
+			setLoading(false)
 		}
 		fetchProducts()
 	}, [])
