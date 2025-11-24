@@ -1,9 +1,13 @@
 import { View, Text, StyleSheet, Button } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import useProductDetails from '../../../hooks/useProductDetails'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import useUser from '../../../hooks/useUser'
+import generateOtp from '../../../util/generateOtp'
+import getUserLocation from '../../../util/getUserLocation'
+import { supabase } from '../../../lib/supabase'
+import inAppNotify from '../../../util/inAppNotify'
 
 const ProductDetails = () => {
     const safeArea = useSafeAreaInsets()
@@ -11,11 +15,36 @@ const ProductDetails = () => {
     const {loading, product} = useProductDetails(id)
     const router = useRouter()
     const {user} = useUser()
+    const [orderLoading, setOrderLoading] = useState(false)
 
-    const handlePlaceOrder = () => {
-        console.log('Product id: ' + id)
-        console.log('User id: ' + user.$id)
-        console.log('Status id:' + 0) // 0 indicates that the order is available to be accepted by deliver person
+    const handlePlaceOrder = async () => {
+        setOrderLoading(true)
+        const dropLocation = await getUserLocation()
+        if (dropLocation.error) {
+            console.log(dropLocation.error)
+            inAppNotify(
+                'Location permission denied', 
+                'Your current location is necessary to place order. Please enable it by navigating to app settings'
+            )
+            setOrderLoading(false)
+        } else {
+            const {error} = await supabase
+                .from('orders')
+                .insert({
+                    productId: id,
+                    customerId: user.$id,
+                    statusId: 0,
+                    dropLocation: dropLocation,
+                    otp: generateOtp()
+                })
+            if (error) console.log(error)
+            inAppNotify(
+                `Awesome! Your order(${name}) is successfully placed`,
+                'For further updates stay on My Orders tab'
+            )
+            setOrderLoading(false)
+            router.navigate('/my-orders')
+        }
     }
     
     if (loading) return (
@@ -49,7 +78,8 @@ const ProductDetails = () => {
                 </View>
             </View>
             <View style={styles.buttons}>
-                {user ? <Button 
+                {user ? <Button
+                    disabled={orderLoading ? true : false}
                     title='Place order'
                     onPress={handlePlaceOrder}
                     color='#57b696'
