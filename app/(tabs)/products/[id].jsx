@@ -3,12 +3,14 @@ import React from 'react'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import useProductDetails from '../../../hooks/useProductDetails'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import useUser from '../../../hooks/useUser'
 
 const ProductDetails = () => {
     const safeArea = useSafeAreaInsets()
     const {id} = useLocalSearchParams()
     const {loading, product} = useProductDetails(id)
     const router = useRouter()
+    const {user} = useUser()
     
     if (loading) return (
         <View style={{marginTop: safeArea.top}}>
@@ -40,6 +42,13 @@ const ProductDetails = () => {
                     <Text style={{color: '#6b6b6bc9', fontSize: 18}}>Retailer: {retailer}</Text>
                 </View>
             </View>
+            {!user && <Button 
+                title='Login to place order'
+                onPress={() => {
+                    router.push('/login')
+                }}
+                color='#925146'
+            />}
             <Button 
                 title='Back'
                 onPress={() => {
