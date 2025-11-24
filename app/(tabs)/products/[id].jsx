@@ -11,6 +11,12 @@ const ProductDetails = () => {
     const {loading, product} = useProductDetails(id)
     const router = useRouter()
     const {user} = useUser()
+
+    const handlePlaceOrder = () => {
+        console.log('Product id: ' + id)
+        console.log('User id: ' + user.$id)
+        console.log('Status id:' + 0) // 0 indicates that the order is available to be accepted by deliver person
+    }
     
     if (loading) return (
         <View style={{marginTop: safeArea.top}}>
@@ -42,24 +48,30 @@ const ProductDetails = () => {
                     <Text style={{color: '#6b6b6bc9', fontSize: 18}}>Retailer: {retailer}</Text>
                 </View>
             </View>
-            {!user && <Button 
-                title='Login to place order'
-                onPress={() => {
-                    router.push('/login')
-                }}
-                color='#925146'
-            />}
-            <Button 
-                title='Back'
-                onPress={() => {
-                    if (router.canGoBack()) {
-                        router.back()
-                    } else {
-                        router.replace('/products')
-                    }
-                }}
-                color='#469279'
-            />
+            <View style={styles.buttons}>
+                {user ? <Button 
+                    title='Place order'
+                    onPress={handlePlaceOrder}
+                    color='#57b696'
+                /> : <Button 
+                    title='Login to place order'
+                    onPress={() => {
+                        router.push('/login')
+                    }}
+                    color='#925146'
+                />}
+                <Button 
+                    title='Back'
+                    onPress={() => {
+                        if (router.canGoBack()) {
+                            router.back()
+                        } else {
+                            router.replace('/products')
+                        }
+                    }}
+                    color='#469279'
+                />
+            </View>
         </View>
     )
 }
@@ -104,4 +116,9 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 20
     },
+    buttons: {
+        marginTop: 10,
+        display: 'flex',
+        gap: 20
+    }
 })
