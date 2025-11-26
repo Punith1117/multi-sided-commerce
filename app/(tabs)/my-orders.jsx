@@ -46,7 +46,10 @@ const MyOrders = () => {
 	}, [user, userLoading])
 	
 	const cancelOrder = async (id) => {
-		// to do
+		await supabase
+			.from('orders')
+			.delete()
+			.eq('id', id)
 	}
 
 	if (userLoading || ordersLoading) return <Text>Loading</Text>
