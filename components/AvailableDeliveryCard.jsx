@@ -3,12 +3,12 @@ import React from 'react'
 import Feather from '@expo/vector-icons/Feather';
 
 const AvailableDeliveryCard = ({details, acceptOrder}) => {
-	const {id, pickup, drop} = details
+	const {id, product, dropLocation} = details
     return (
         <View style={styles.container}>
-          	<Text style={styles.location}>Pickup: {pickup}</Text>
+          	<Text style={styles.location}>Pickup: {product.location}</Text>
 			<Feather style={{alignSelf: 'center'}} name="arrow-down" size={30} color="white" />
-			<Text style={styles.location}>Drop: {drop}</Text>
+			<Text style={styles.location}>Drop: {dropLocation}</Text>
 			<Pressable 
 				onPress={() => acceptOrder(id)}
 				style={styles.acceptButton}
