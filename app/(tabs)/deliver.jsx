@@ -4,16 +4,46 @@ import UserOnly from '../../components/UserOnly'
 import useUser from '../../hooks/useUser'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link } from 'expo-router'
+import AvailableDeliveries from '../../components/AvailableDeliveries'
+import CurrentDelivery from '../../components/CurrentDelivery'
+import useDelivery from '../../hooks/useDelivery'
 
 const Deliver = () => {
   const {user, userLoading} = useUser()
+  const {
+    deliveryData, 
+    setDeliveryData, 
+    orderAccepted, 
+    setOrderAccepted, 
+    loading, 
+    setLoading
+  } = useDelivery()
 
-  if (userLoading) return <Text>Loading</Text>
+  const acceptOrder = async (id) => {
+    console.log('Order accepted')
+    // to do
+  }
+
+  const cancelOrder = async (id) => {
+    console.log('Order cancelled')
+    // to do
+  }
+
+  const updateOrder = async (otp) => {
+    console.log('Order updated')
+    // to do
+  }
+
+  if (userLoading || loading) return <Text>Loading</Text>
+
   return (
     <UserOnly>
       <SafeAreaView>
-        <Text>Deliver content</Text>
         <Text>Hello {user?.email}</Text>
+        {orderAccepted
+          ? <CurrentDelivery deliveryData={deliveryData} cancelOrder={cancelOrder} updateOrder={updateOrder}/>
+          : <AvailableDeliveries deliveryData={deliveryData} acceptOrder={acceptOrder}/>
+        }
         <Link href={'/logout'}>Logout</Link>
       </SafeAreaView>
     </UserOnly>
