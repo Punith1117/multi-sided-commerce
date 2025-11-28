@@ -99,7 +99,10 @@ const DeliveryProvider = ({children}) => {
     }, [user, orderAccepted])
 
     useEffect(() => {
-        if (!user) return
+        if (!user) {
+            setLoading(false)
+            return
+        }
         const initialCheck = async () => {
             setLoading(true)
             const {data, error} = await supabase
