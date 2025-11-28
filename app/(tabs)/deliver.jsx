@@ -7,6 +7,7 @@ import { Link } from 'expo-router'
 import AvailableDeliveries from '../../components/AvailableDeliveries'
 import CurrentDelivery from '../../components/CurrentDelivery'
 import useDelivery from '../../hooks/useDelivery'
+import { supabase } from '../../lib/supabase'
 
 const Deliver = () => {
   const {user, userLoading} = useUser()
@@ -20,13 +21,34 @@ const Deliver = () => {
   } = useDelivery()
 
   const acceptOrder = async (id) => {
-    console.log('Order accepted')
-    // to do
+    const {error} = await supabase
+      .from('orders')
+      .update({
+        statusId: 1,
+        deliveryPersonId: user.$id
+      })
+      .eq('id', id)
+    if (error) {
+      console.error(error)
+      return
+    }
+    setLoading(true)
+    setOrderAccepted(true)
   }
 
   const cancelOrder = async (id) => {
-    console.log('Order cancelled')
-    // to do
+    const {error} = await supabase
+      .from('orders')
+      .update({
+        statusId: 0,
+        deliveryPersonId: null
+      })
+      .eq('id', id)
+    if (error) {
+      console.error(error)
+      return
+    }
+    setOrderAccepted(false)
   }
 
   const updateOrder = async (otp) => {
