@@ -8,6 +8,7 @@ import AvailableDeliveries from '../../components/AvailableDeliveries'
 import CurrentDelivery from '../../components/CurrentDelivery'
 import useDelivery from '../../hooks/useDelivery'
 import { supabase } from '../../lib/supabase'
+import inAppNotify from '../../util/inAppNotify'
 
 const Deliver = () => {
   const {user, userLoading} = useUser()
@@ -52,8 +53,64 @@ const Deliver = () => {
   }
 
   const updateOrder = async (otp) => {
-    console.log('Order updated')
-    // to do
+    if (deliveryData.statusId == 2) {
+      if (otp == '' || otp == undefined) {
+        inAppNotify(`Invisible OTP?!`, 'I have never seen it until now :(')
+        return
+      }
+      const {data, error} = await supabase
+        .functions
+        .invoke('verify-otp', {
+          body: {
+            otp: otp,
+            orderId: deliveryData.id
+          }
+        })
+      if (error) {
+        console.error(error)
+        return
+      }
+      if (data.isCorrect == true) {
+        const {error} = await supabase
+        .from('orders')
+        .update({
+          statusId: 3
+        })
+        .eq('id', deliveryData.id)
+        if (error) {
+          console.error(error)
+          return
+        }
+        inAppNotify('Congratulations!! :)', 'You have successfully completed the delivery')
+        setOrderAccepted(false)
+      } else {
+        inAppNotify('Invalid OTP :(', 'Try again!')
+      }
+    } else {
+      const {data, error} = await supabase
+        .from('orders')
+        .update({
+          statusId: 2
+        })
+        .eq('id', deliveryData.id)
+        .select(`
+          id,
+          statusId,
+          product: productId (
+              location,
+              retailer
+          ),
+          customer: customerId (
+              email
+          ),
+          dropLocation
+        `)
+      if (error) {
+        console.error(error)
+        return
+      }
+      setDeliveryData(data[0])
+    }
   }
 
   if (userLoading || loading) return <Text>Loading</Text>
