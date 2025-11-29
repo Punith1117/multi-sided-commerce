@@ -3,16 +3,13 @@ import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import ProductCard from '../../../components/ProductCard'
 import useProducts from '../../../hooks/useProducts'
+import Loading from '../../../components/Loading'
 
 const Products = () => {
 	const safeArea = useSafeAreaInsets()
 	const {products, loading} = useProducts()
 
-	if (loading) return (
-		<View style={{marginTop: safeArea.top}}>
-			<Text>Loading...</Text>
-		</View>
-	)
+	if (loading) return <Loading />
 	
 	return (
 		<View style={{marginTop: safeArea.top}}>

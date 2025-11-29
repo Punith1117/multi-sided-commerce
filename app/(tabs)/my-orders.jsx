@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { supabase } from '../../lib/supabase'
 import OrderCard from '../../components/OrderCard'
 import useOrders from '../../hooks/useOrders'
+import Loading from '../../components/Loading'
 
 const MyOrders = () => {
 	const {user, userLoading} = useUser()
@@ -20,7 +21,7 @@ const MyOrders = () => {
 			.eq('id', id)
 	}
 
-	if (userLoading || ordersLoading) return <Text>Loading</Text>
+	if (userLoading || ordersLoading) return <Loading />
 
 	return (
 		<UserOnly>

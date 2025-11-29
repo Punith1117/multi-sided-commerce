@@ -8,6 +8,7 @@ import generateOtp from '../../../util/generateOtp'
 import getUserLocation from '../../../util/getUserLocation'
 import { supabase } from '../../../lib/supabase'
 import inAppNotify from '../../../util/inAppNotify'
+import Loading from '../../../components/Loading'
 
 const ProductDetails = () => {
     const safeArea = useSafeAreaInsets()
@@ -47,11 +48,7 @@ const ProductDetails = () => {
         }
     }
     
-    if (loading) return (
-        <View style={{marginTop: safeArea.top}}>
-            <Text>Loading...</Text>
-        </View>
-    )
+    if (loading) return <Loading />
 
     const {
         id: productId, // id conflicts with already declared param id

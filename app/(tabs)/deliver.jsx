@@ -9,6 +9,7 @@ import CurrentDelivery from '../../components/CurrentDelivery'
 import useDelivery from '../../hooks/useDelivery'
 import { supabase } from '../../lib/supabase'
 import inAppNotify from '../../util/inAppNotify'
+import Loading from '../../components/Loading'
 
 const Deliver = () => {
   const {user, userLoading} = useUser()
@@ -113,7 +114,7 @@ const Deliver = () => {
     }
   }
 
-  if (userLoading || loading) return <Text>Loading</Text>
+  if (userLoading || loading) return <Loading />
 
   return (
     <UserOnly>

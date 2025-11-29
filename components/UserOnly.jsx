@@ -3,6 +3,7 @@ import React from 'react'
 import useUser from '../hooks/useUser'
 import { Link } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import Loading from './Loading'
 
 const UserOnly = ({ children }) => {
   const { user, userLoading } = useUser()
@@ -15,7 +16,7 @@ const UserOnly = ({ children }) => {
       </SafeAreaView>
     )
   }
-  if (userLoading) return <Text>Loading</Text>
+  if (userLoading) return <Loading />
 
   return <>{children}</>
 }
