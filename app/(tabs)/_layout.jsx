@@ -1,6 +1,7 @@
 import { StyleSheet, Button } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
+import {FontAwesome6} from '@expo/vector-icons/';
 
 const TabLayout = () => {
   return (
@@ -10,19 +11,22 @@ const TabLayout = () => {
         <Tabs.Screen 
             name='products'
             options={{
-                title: 'Products'
+                title: 'Products',
+                tabBarIcon: ({color}) => <FontAwesome6 size={28} name='store' color={color}/>
             }}
         />
         <Tabs.Screen 
             name='deliver'
             options={{
-                title: 'Deliver'
+                title: 'Deliver',
+                tabBarIcon: ({color}) => <FontAwesome6 size={28} name='truck-fast' color={color}/>
             }}
         />
         <Tabs.Screen 
             name='my-orders'
             options={{
-                title: 'My Orders'
+                title: 'My Orders',
+                tabBarIcon: ({color}) => <FontAwesome6 size={28} name='table-list' color={color}/>
             }}
         />
     </Tabs>
