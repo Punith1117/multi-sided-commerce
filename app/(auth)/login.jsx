@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { account, DATABASE_ID, databases } from '../../lib/appwrite'
-import { ID, Query } from 'react-native-appwrite'
+import { ID } from 'react-native-appwrite'
 import useUser from '../../hooks/useUser'
 import { supabase } from '../../lib/supabase'
 
@@ -49,33 +49,37 @@ const Login = () => {
 	}
   
 	return (
-		<SafeAreaView>
-			<Text>Login</Text>
-			<TextInput 
-				placeholder='Enter your email here...'
-				keyboardType='email-address'
-				style={styles.textInput} 
-				placeholderTextColor={'#a7a7a7'}
-				value={email}
-				onChangeText={setEmail}
-			/>
-			<Button disabled={userId !== null} onPress={() => {handleEmailSubmit(email)}} title='Submit email' />
+		<SafeAreaView style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+			<View style={styles.container}>
+				<Text style={styles.title}>Login</Text>
+				<View style={styles.emailContainer}>
+					<TextInput 
+						placeholder='Enter your email here...'
+						keyboardType='email-address'
+						style={styles.emailInput} 
+						placeholderTextColor='#a7a7a7'
+						onChangeText={updated => setEmail(updated)}
+						value={email}
+					/>
+					<Button disabled={userId !== null} onPress={() => {handleEmailSubmit(email)}} title='Submit email' />
+				</View>
 
-			{ userId && (
-				<>
-				<TextInput 
-					placeholder='Enter your secret here...'
-					keyboardType='visible-password'
-					style={styles.textInput} 
-					placeholderTextColor={'#ff4b4b'}
-					value={secret}
-					onChangeText={setSecret}
-				/>
-				<Button onPress={() => {handleSecretSubmit(secret)}} title='Submit secret' />
-				</>
-			) }
+				{ userId && (
+					<View style={styles.secretContainer}>
+						<TextInput 
+							placeholder='******'
+							keyboardType='numeric'
+							style={styles.secretInput} 
+							placeholderTextColor='#ff4b4b'
+							onChangeText={updated => setSecret(updated)}
+							value={secret}
+						/>
+						<Button onPress={() => {handleSecretSubmit(secret)}} title='Submit secret' />
+					</View>
+				) }
 
-			<Button onPress={() => {router.replace('/products')}} title='Back' />
+				<Button onPress={() => {router.back()}} title='Back' />
+			</View>
 		</SafeAreaView>
 	)
 }
@@ -83,8 +87,43 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
-  textInput: {
+  emailInput: {
     backgroundColor: '#3a3a3a',
     color: '#fff',
+  },
+  container: {
+	marginTop: 150,
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center',
+	gap: 50
+  },
+  title: {
+	fontSize: 30
+  },
+  emailContainer: {
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'stretch',
+	gap: 5,
+	width: 300
+  },
+  secretContainer: {
+	display: 'flex',
+	flexDirection: 'row',
+	justifyContent: 'center',
+	alignItems: 'center',
+	gap: 20
+  },
+  secretInput: {
+	backgroundColor: '#000000',
+	textAlign: 'center',
+	color: '#fff',
+	fontSize: 20,
+	boxSizing: 'border-box',
+	padding: 5,
+	width: 130,
+	borderRadius: 20,
+	letterSpacing: 5
   }
 })
