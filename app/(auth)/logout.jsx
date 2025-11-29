@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { account } from '../../lib/appwrite'
@@ -21,10 +21,17 @@ const Logout = () => {
 
   return (
     <SafeAreaView>
-        <Text>Logout</Text>
-        <Text>Are you sure to logout?</Text>
-        <Button onPress={handleLogout} title='Yes' />
-        <Button onPress={() => {router.replace('/products')}} title='Back' />
+        <View style={styles.container}>
+          <Text style={styles.title}>Logout</Text>
+          <Text style={styles.question}>Are you sure to logout?</Text>
+          <Button 
+            onPress={handleLogout}
+            title='    Yes    '
+            color='#ff0c0c'
+          />
+          <View style={styles.spacer}></View>
+          <Button onPress={() => {router.back()}} title='    No    ' />
+        </View>
     </SafeAreaView>
   )
 }
@@ -32,8 +39,21 @@ const Logout = () => {
 export default Logout
 
 const styles = StyleSheet.create({
-  	textInput: {
-    	backgroundColor: '#3a3a3a',
-    	color: '#fff',
-  	}
+    container: {
+      marginTop: 300,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 10
+    },
+    title: {
+      fontSize: 20,
+      color: '#ff0000'
+    },
+    question: {
+      fontSize: 30
+    },
+    spacer: {
+      margin: 30
+    }
 })
