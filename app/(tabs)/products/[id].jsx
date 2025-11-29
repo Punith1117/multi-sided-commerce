@@ -9,6 +9,7 @@ import getUserLocation from '../../../util/getUserLocation'
 import { supabase } from '../../../lib/supabase'
 import inAppNotify from '../../../util/inAppNotify'
 import Loading from '../../../components/Loading'
+import Author from '../../../components/Author'
 
 const ProductDetails = () => {
     const safeArea = useSafeAreaInsets()
@@ -99,6 +100,7 @@ const ProductDetails = () => {
                     color='#469279'
                 />
             </View>
+            <Author />
         </View>
     )
 }
