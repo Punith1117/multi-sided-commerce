@@ -2,10 +2,11 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { account, DATABASE_ID, databases } from '../../lib/appwrite'
+import { account } from '../../lib/appwrite'
 import { ID } from 'react-native-appwrite'
 import useUser from '../../hooks/useUser'
 import { supabase } from '../../lib/supabase'
+import inAppNotify from '../../util/inAppNotify'
 
 const Login = () => {
 	const router = useRouter()
@@ -22,6 +23,7 @@ const Login = () => {
 			})
 			setUserId(sessionToken.userId)
 		} catch (e) {
+			inAppNotify('Email is not valid', 'Please try a different one')
 			console.log(e)
 		}
 	}
@@ -36,15 +38,14 @@ const Login = () => {
 			setUser(user)			
 			setUserLoading(false)
 
-			const { data, error } = await supabase
+			const { error } = await supabase
 				.from('users')
 				.upsert({userId: user.$id, email: user.email})
-				.select()
 			if (error) console.log(error)			
+			router.back()
 		} catch (e) {
 			console.log(e)
-		} finally {
-			router.replace('/products')
+			inAppNotify('Invalid secret', 'Check the mail sent to you again')
 		}
 	}
   
