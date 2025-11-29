@@ -118,12 +118,12 @@ const Deliver = () => {
   return (
     <UserOnly>
       <SafeAreaView>
-        <Text>Hello {user?.email}</Text>
+        <Text style={styles.greeting}>Hello, {user?.email} !</Text>
         {orderAccepted
           ? <CurrentDelivery deliveryData={deliveryData} cancelOrder={cancelOrder} updateOrder={updateOrder}/>
           : <AvailableDeliveries deliveryData={deliveryData} acceptOrder={acceptOrder}/>
         }
-        <Link href={'/logout'}>Logout</Link>
+        <Link href={'/logout'} style={styles.logout}>Logout</Link>
       </SafeAreaView>
     </UserOnly>
   )
@@ -131,4 +131,19 @@ const Deliver = () => {
 
 export default Deliver
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  logout: {
+		position: 'absolute',
+		top: 75,
+		right: 8,
+		backgroundColor: '#ffffff',
+		padding: 8,
+		borderRadius: 10,
+		color: '#000000',
+		boxShadow: '3px 3px 6px #000000b2'
+	},
+	greeting: {
+		textAlign: 'center',
+		fontSize: 20
+	}
+})

@@ -24,14 +24,14 @@ const MyOrders = () => {
 
 	return (
 		<UserOnly>
-			<View style={{marginTop: safeArea.top, marginBottom: safeArea.bottom}}>
-				<Text>Hello {user?.email}</Text>
+			<View style={{marginTop: safeArea.top, marginBottom: safeArea.bottom - 20}}>
+				<Text style={styles.greeting}>Hello, {user?.email} !</Text>
 				<FlatList 
 					data={orders}
 					renderItem={({item}) => <OrderCard details={item} cancelOrder={cancelOrder}/>}
 					keyExtractor={order => order.id.toString()}
 				/>
-				<Link href={'/logout'}>Logout</Link>
+				<Link href={'/logout'} style={styles.logout}>Logout</Link>
 			</View>
 		</UserOnly>
 	)
@@ -39,4 +39,19 @@ const MyOrders = () => {
 
 export default MyOrders
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	logout: {
+		position: 'absolute',
+		top: 35,
+		right: 8,
+		backgroundColor: '#ffffff',
+		padding: 8,
+		borderRadius: 10,
+		color: '#000000',
+		boxShadow: '3px 3px 6px #000000b2'
+	},
+	greeting: {
+		textAlign: 'center',
+		fontSize: 20
+	}
+})
